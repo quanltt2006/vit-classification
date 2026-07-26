@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from model.vit import ViT
-from datasets.oxford_pet import get_dataloaders
+from data_loaders.oxford_pet import get_dataloaders
 from engine.trainer import train_one_epoch, evaluate
 
 
