@@ -1,5 +1,5 @@
 import torch
-from vit import ViT
+from model.vit import ViT
 
 def test_vit():
     img_size = 224
