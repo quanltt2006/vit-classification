@@ -19,8 +19,8 @@ data:
 train:
   lr: 0.0001
   weight_decay: 0.05
-  epochs: 50
-  device: "cuda"   # hoặc "cpu"
+  epochs: 1
+  device: "cpu"   # hoặc "cpu"
   checkpoint_dir: "checkpoints"
   patience: 5      # early stopping: dừng nếu val_acc không cải thiện sau N epoch
   scheduler:

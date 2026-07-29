@@ -1,6 +1,7 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split, Subset
+from torch.utils.data import Subset
 
 
 def get_dataloaders(config):
