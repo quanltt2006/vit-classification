@@ -4,6 +4,33 @@ from torch.utils.data import DataLoader, random_split, Subset
 from torch.utils.data import Subset
 
 
+IMAGENET_MEAN = [0.485, 0.456, 0.406]
+IMAGENET_STD = [0.229, 0.224, 0.225]
+
+def build_train_transform(img_size: int):
+    return transforms.Compose([
+        transforms.Resize((img_size, img_size)),
+        transforms.RandomHorizontalFlip(p=0.5),
+        transforms.RandomRotation(degrees=10),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
+    ])
+
+def build_eval_transform(img_size:int):
+    return transforms.Compose([
+        transforms.Resize((img_size, img_size)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
+    ])                     
+
+def get_class_names(config: dict): 
+    eval_transform = build_eval_transform(config['model']['img_size'])
+    dataset = datasets.OxfordIIITPet(
+        root='data', split='test', download=True, transform=eval_transform
+    )
+    return dataset.classes
+
 def get_dataloaders(config):
     """
     Trả về train_loader, val_loader, test_loader.
@@ -21,20 +48,10 @@ def get_dataloaders(config):
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
 
-    train_transform = transforms.Compose([
-        transforms.Resize((img_size, img_size)),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.RandomRotation(degrees=10),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std),
-    ])
+    train_transform = build_train_transform(img_size)
 
-    eval_transform = transforms.Compose([
-        transforms.Resize((img_size, img_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std),
-    ])
+    eval_transform = build_eval_transform(img_size)
+
 
     # Tải 2 bản trainval: 1 bản có augment (dùng cho train),
     # 1 bản không augment (dùng cho val) — cùng ảnh, khác transform.
