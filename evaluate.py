@@ -17,24 +17,17 @@ from utils.metrics import (
     compute_confusion_matrix,
     compute_macro_roc,
 )
+from model.factory import build_model
+
 
 
 def load_config(path: str) -> dict:
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
-def build_model(config: dict, device: str) -> ViT:
-    """Khởi tạo model với đúng kiến trúc ghi trong config (giống hệt lúc train)."""
-    return ViT(
-        img_size=config["model"]["img_size"],
-        patch_size=config["model"]["patch_size"],
-        in_chans=3,
-        n_classes=config["model"]["num_classes"],
-        embed_dim=config["model"]["embed_dim"],
-        depth=config["model"]["depth"],
-        n_heads=config["model"]["num_heads"],
-    ).to(device)
+
+
 
 @torch.no_grad()
 def run_inference(model: ViT, loader, device: str):

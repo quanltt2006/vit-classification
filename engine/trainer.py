@@ -25,7 +25,7 @@ class Trainer:
 
         self.checkpoint_dir = config["train"]["checkpoint_dir"]
 
-        self.patiece = config["train"].get("patience", 5)
+        self.patience = config["train"].get("patience", 5)
         self.start_epoch = 0 
         self.best_acc = 0.0
         self.patience_counter = 0

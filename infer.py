@@ -10,7 +10,7 @@ from model.factory import build_model
 import torch.nn as nn
 
 def load_config(path: str) -> dict:
-    with open(path, "r") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
