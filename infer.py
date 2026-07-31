@@ -6,22 +6,14 @@ import yaml
 from model.vit import ViT
 from data_loaders.oxford_pet import get_class_names
 from utils.image_utils import load_image, preprocess_image, find_images_in_folder
+from model.factory import build_model
+import torch.nn as nn
 
-
-def load_config(path:str):
+def load_config(path: str) -> dict:
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
-def build_model(config: dict, device: str) -> ViT:
-    return ViT(
-        img_size=config["model"]["img_size"],
-        patch_size=config["model"]["patch_size"],
-        in_chans=3,
-        n_classes=config["model"]["num_classes"],
-        embed_dim=config["model"]["embed_dim"],
-        depth=config["model"]["depth"],
-        n_heads=config["model"]["num_heads"],
-    ).to(device)
+
 
 
 def load_model_for_inference(config: dict, checkpoint_path: str, device: str) -> ViT:
@@ -36,7 +28,7 @@ def load_model_for_inference(config: dict, checkpoint_path: str, device: str) ->
     return model
 
 @torch.no_grad
-def predict_batch(model: ViT, image_paths: list, config: dict, class_names: list,
+def predict_batch(model: nn.Module, image_paths: list, config: dict, class_names: list,
                    device: str, top_k: int = 3) -> dict:
 
     tensors, valid_paths = [], []

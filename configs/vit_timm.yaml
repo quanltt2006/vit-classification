@@ -1,0 +1,25 @@
+exp_name: "vit_timm_transfer"
+
+model:
+  backend: "timm"                    # "self" | "timm"
+  timm_name: "vit_small_patch16_224"  # đổi tên bất kỳ model nào trong timm.list_models()
+  img_size: 224                        # phải khớp img_size gốc của model timm (thường 224)
+  num_classes: 37
+
+data:
+  batch_size: 32
+  num_workers: 2
+  val_split: 0.1
+
+train:
+  lr: 0.00003          # NHỎ HƠN NHIỀU so với from-scratch (3e-4) - fine-tune, không phá pretrained
+  weight_decay: 0.05
+  epochs: 15            # pretrained hội tụ nhanh, không cần 50 epoch như from-scratch
+  device: "cuda"
+  checkpoint_dir: "checkpoints_timm"
+  patience: 5
+  amp: true
+  scheduler:
+    type: "cosine"
+    step_size: 10
+    gamma: 0.1

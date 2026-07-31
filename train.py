@@ -9,21 +9,14 @@ from model.vit import ViT
 from data_loaders.oxford_pet import get_dataloaders
 from engine.trainer import Trainer
 from utils.logger import setup_logger
+from model.factory import build_model
 
-def load_config(config_path):
-    with open(config_path, "r") as f:
+
+def load_config(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-def build_model(config: dict, device: str) -> ViT:
-    return ViT(
-        img_size=config["model"]["img_size"],
-        patch_size=config["model"]["patch_size"],
-        in_chans=3,
-        n_classes=config["model"]["num_classes"],
-        embed_dim=config["model"]["embed_dim"],
-        depth=config["model"]["depth"],
-        n_heads=config["model"]["num_heads"],
-    ).to(device)
+
 
 def build_scheduler(optimizer, config):
     sch_cfg = config["train"].get("scheduler", {"type": "none"})
