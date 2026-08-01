@@ -2,7 +2,7 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split, Subset
 from torch.utils.data import Subset
-
+from utils.preprocessing import get_preprocessing_config
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
@@ -25,7 +25,8 @@ def build_eval_transform(img_size:int):
     ])                     
 
 def get_class_names(config: dict): 
-    eval_transform = build_eval_transform(config['model']['img_size'])
+    prep = get_preprocessing_config(config)
+    eval_transform = build_eval_transform(prep["img_size"], prep["mean"], prep["std"])
     dataset = datasets.OxfordIIITPet(
         root='data', split='test', download=True, transform=eval_transform
     )
@@ -40,7 +41,11 @@ def get_dataloaders(config):
     - test luôn dùng split 'test' riêng biệt, không bao giờ dùng để chọn best model.
     - train có augmentation, val/test KHÔNG augmentation (để đánh giá công bằng).
     """
-    img_size = config['model']['img_size']
+    prep = get_preprocessing_config(config)
+    img_size, mean, std = prep['img_size'], prep['mean'], prep['std']
+
+
+
     batch_size = config['data']['batch_size']
     num_workers = config['data'].get('num_workers', 2)
     val_split = config['data'].get('val_split', 0.1)

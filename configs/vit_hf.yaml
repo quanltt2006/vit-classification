@@ -1,0 +1,25 @@
+exp_name: "vit_hf_transfer"
+
+model:
+  backend: "hf"
+  hf_name: "google/vit-base-patch16-224"
+  img_size: 224
+  num_classes: 37
+
+data:
+  batch_size: 32
+  num_workers: 2
+  val_split: 0.1
+
+train:
+  lr: 0.00003
+  weight_decay: 0.05
+  epochs: 15
+  device: "cpu"
+  checkpoint_dir: "checkpoints_hf"
+  patience: 5
+  amp: true
+  scheduler:
+    type: "cosine"
+    step_size: 10
+    gamma: 0.1

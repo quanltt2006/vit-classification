@@ -8,6 +8,7 @@ from data_loaders.oxford_pet import get_class_names
 from utils.image_utils import load_image, preprocess_image, find_images_in_folder
 from model.factory import build_model
 import torch.nn as nn
+from utils.preprocessing import get_preprocessing_config
 
 def load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -32,12 +33,13 @@ def predict_batch(model: nn.Module, image_paths: list, config: dict, class_names
                    device: str, top_k: int = 3) -> dict:
 
     tensors, valid_paths = [], []
+    prep_config = get_preprocessing_config(config)
 
 
     for path in image_paths:
         try:
             image = load_image(path)
-            tensor = preprocess_image(image, config["model"]["img_size"])
+            tensor = preprocess_image(image, prep_config)
             tensors.append(tensor)
             valid_paths.append(path)
         except Exception as e: 
