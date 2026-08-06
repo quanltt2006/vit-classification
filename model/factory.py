@@ -38,6 +38,8 @@ def build_model(config: dict, device: str) -> nn.Module:
             return _build_self_vit(config, device)
         elif model_name == "resnet":
             return _build_resnet(config, device)
+        elif model_name == "densenet":
+            return _build_densenet(config, device)
         else:
             raise ValueError(f"Model không hỗ trợ: {model_name!r} (chỉ nhận 'vit' hoặc 'resnet')")
     elif backend == "timm":
@@ -69,7 +71,6 @@ def _build_timm_model(config: dict, device: str) -> nn.Module:
     return model.to(device)
 
 def _build_resnet(config: dict, device: str) -> nn.Module:
-    # Import class ResNet và BasicBlock từ file resnet.py của bạn
     from model.resnet import ResNet, ResidualBlock # Giả sử bạn để BasicBlock trong cùng file
     
 
@@ -79,4 +80,15 @@ def _build_resnet(config: dict, device: str) -> nn.Module:
         residual_block=ResidualBlock, 
         n_blocks_lst=n_blocks_lst,
         n_classes=config["model"]["num_classes"]
+    ).to(device)
+def _build_densenet(config: dict, device: str) -> nn.Module:
+    from model.densenet import DenseNet
+
+    num_blocks = config["model"].get("num_blocks", [6, 12, 24, 16])
+    growth_rate = config["model"].get("growth_rate", 32)
+
+    return DenseNet(
+        num_blocks=num_blocks,
+        growth_rate=growth_rate,
+        num_classes=config["model"]["num_classes"]
     ).to(device)
