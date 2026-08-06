@@ -13,7 +13,7 @@ def load_image(path: str):
 
 def preprocess_image(image: Image.Image, prep_config: dict) -> torch.Tensor:
     """Trả về tensor [1, 3, H, W] sẵn sàng đưa vào model. prep_config từ get_preprocessing_config()."""
-    transform = build_eval_transform(prep_config["img_size"], prep_config["mean"], prep_config["std"])
+    transform = build_eval_transform(prep_config["img_size"])
     tensor = transform(image)
     return tensor.unsqueeze(0)
 

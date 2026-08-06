@@ -26,7 +26,7 @@ def build_eval_transform(img_size:int):
 
 def get_class_names(config: dict): 
     prep = get_preprocessing_config(config)
-    eval_transform = build_eval_transform(prep["img_size"], prep["mean"], prep["std"])
+    eval_transform = build_eval_transform(prep["img_size"])
     dataset = datasets.OxfordIIITPet(
         root='data', split='test', download=True, transform=eval_transform
     )

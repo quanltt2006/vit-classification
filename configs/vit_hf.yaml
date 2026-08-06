@@ -15,7 +15,7 @@ train:
   lr: 0.00003
   weight_decay: 0.05
   epochs: 15
-  device: "cpu"
+  device: "cuda"
   checkpoint_dir: "checkpoints_hf"
   patience: 5
   amp: true

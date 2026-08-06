@@ -33,7 +33,13 @@ def build_model(config: dict, device: str) -> nn.Module:
     backend = config["model"].get("backend", "self")
 
     if backend == "self":
-        return _build_self_vit(config, device)
+        model_name = config["model"].get("name", "vit").lower()
+        if model_name == "vit":
+            return _build_self_vit(config, device)
+        elif model_name == "resnet":
+            return _build_resnet(config, device)
+        else:
+            raise ValueError(f"Model không hỗ trợ: {model_name!r} (chỉ nhận 'vit' hoặc 'resnet')")
     elif backend == "timm":
         return _build_timm_model(config, device)
     elif backend == "hf":
@@ -62,4 +68,15 @@ def _build_timm_model(config: dict, device: str) -> nn.Module:
     )
     return model.to(device)
 
+def _build_resnet(config: dict, device: str) -> nn.Module:
+    # Import class ResNet và BasicBlock từ file resnet.py của bạn
+    from model.resnet import ResNet, ResidualBlock # Giả sử bạn để BasicBlock trong cùng file
+    
 
+    n_blocks_lst = config["model"].get("n_blocks_lst", [2, 2, 2, 2])
+    
+    return ResNet(
+        residual_block=ResidualBlock, 
+        n_blocks_lst=n_blocks_lst,
+        n_classes=config["model"]["num_classes"]
+    ).to(device)

@@ -1,16 +1,17 @@
-exp_name: "vit_experiment_1"
+exp_name: "resnet_experiment_1"
 
 # Cấu hình Model
 model:
-  backend: "self"   
-  name : "vit"
+  backend: "self"
+  name: "resnet"
+  num_classes: 10
+  n_blocks_lst: [2, 2, 2, 2] # Đây là ResNet-18
   img_size: 224
   patch_size: 16
   embed_dim: 768
   depth: 12
   num_heads: 12
   num_classes: 37
-
 # Cấu hình Dữ liệu
 data:
   batch_size: 32

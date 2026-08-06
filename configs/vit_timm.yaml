@@ -15,7 +15,7 @@ train:
   lr: 0.00003          # NHỎ HƠN NHIỀU so với from-scratch (3e-4) - fine-tune, không phá pretrained
   weight_decay: 0.05
   epochs: 15            # pretrained hội tụ nhanh, không cần 50 epoch như from-scratch
-  device: "cuda"
+  device: "cpu"
   checkpoint_dir: "checkpoints_timm"
   patience: 5
   amp: true

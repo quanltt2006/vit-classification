@@ -1,0 +1,19 @@
+# Bỏ qua môi trường ảo và cấu hình IDE
+venv/
+.vscode/
+
+# Bỏ qua Dataset (Dữ liệu ảnh cực nặng)
+data/
+
+# Bỏ qua các file Model, Log và Kết quả sinh ra lúc Train
+checkpoints/
+logs/
+outputs/
+
+# Bỏ qua file rác sinh ra lúc chạy code
+__pycache__/
+*.pyc
+
+# Bỏ qua file Markdown không cần thiết cho code chạy
+README.md
+roadmap.md
